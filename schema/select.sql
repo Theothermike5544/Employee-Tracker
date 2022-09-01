@@ -1,0 +1,7 @@
+-- SELECTING FOR CREATING 
+
+--TABLES IN OUR SQL WORKBENCH 
+
+SELECT * FROM department;
+SELECT * FROM roles;
+SELECT * FROM employee;
