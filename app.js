@@ -32,6 +32,9 @@ const start = () => {
             "Add Employee?",
             "Add Role?",
             "Add Department?",
+            "Remove an Employee",
+            "Remove a Role",
+            "Remove a Department"
           ],
         },
     ])
@@ -65,6 +68,18 @@ const start = () => {
             case "Add Department?":
               addDept();
               break;
+            
+            case "Remove an Employee":
+            removeEmployee();
+            break;
+
+            case "Remove a Role":
+            removeRole();
+            break;
+
+            case "Remove a Department":
+            removeDepartment();
+            break;
         }
     });
 };
@@ -92,7 +107,7 @@ const viewRoles = () => {
     });
 };
 
-//View all roles
+//View all departments
 
 const viewDepart = () => {
 
@@ -103,6 +118,7 @@ const viewDepart = () => {
     });
 };
 
+//Add Employee//
 const addEmployee = () => {
     connection.query("SELECT * FROM roles", (err, roles) => {
       if (err) throw err;
@@ -173,6 +189,7 @@ connection.query("SELECT * FROM employee", (err, managers) => {
 });
 };
 
+//Add Role//
 const addRole = () => {
     connection.query("SELECT * FROM department", (err, departments) => {
         if (err) throw err;
@@ -220,6 +237,7 @@ const addRole = () => {
     });
 };
 
+//Add Department//
 const addDept = () => {
     inquirer
         .prompt([
@@ -245,6 +263,7 @@ const addDept = () => {
     });
 };
 
+//Update Employee Role//
 const updateEmployRoles = () => {
     connection.query("SELECT * FROM roles", (err, roles) => {
         if (err) throw err;
@@ -292,6 +311,24 @@ const updateEmployRoles = () => {
             });
         });
     });
+}
+
+//Remove Employee//
+
+const removeEmployee = () => {
+
+}
+
+//Remove Role//
+
+const removeRole = () => {
+
+}
+
+//Remove Department//
+
+const removeDepartment = () => {
+
 }
 
 // connect to the mysql server and sql database
