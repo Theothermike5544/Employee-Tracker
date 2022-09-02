@@ -4,12 +4,12 @@
 
 In Module 12's Challenge, I designed and built a viable solution for managing a company's employees using node, inquirer, console.table and MySQL. The following functions in this application include:
 
-Viewing all Employees, Roles, or Departments
-Searching for Employees by Manager
-Updating Employees Roles or Manager
-Adding Employee, Role, or Department
-Removing Employee, Role, or Department
-Viewing Department's total utilized budget
+1. Viewing all Employees, Roles, or Departments  /br
+2. Searching for Employees by Manager  /br
+3. Updating Employees Roles or Manager  /br
+4. Adding Employee, Role, or Department  /br
+5. Removing Employee, Role, or Department  /br
+6. Viewing Department's total utilized budget  /br
 
 ## Table of Contents
   * [Installation](#installation)
