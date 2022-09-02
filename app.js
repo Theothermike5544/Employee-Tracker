@@ -34,7 +34,7 @@ const start = () => {
             "Add Department?",
             "Remove an Employee",
             "Remove a Role",
-            "Remove a Department"
+            "Remove a Department",
           ],
         },
     ])
@@ -42,44 +42,44 @@ const start = () => {
     .then((answer) => {
         switch (answer.options) {
             case "View all Employees?":
-              viewAllEmploy();
-              break;
+                viewAllEmploy();
+                break;
     
             case "View all Roles?":
-              viewRoles();
-              break;
+                viewRoles();
+                break;
     
             case "View all Department's":
-              viewDepart();
-              break;
+                viewDepart();
+                break;
     
             case "Update Employee roles":
-              updateEmployRoles();
-              break;
+                updateEmployRoles();
+                break;
     
             case "Add Employee?":
-              addEmployee();
-              break;
+                addEmployee();
+                break;
     
             case "Add Role?":
-              addRole();
-              break;
+                addRole();
+                break;
     
             case "Add Department?":
-              addDept();
-              break;
+                addDept();
+                break;
             
             case "Remove an Employee":
-            removeEmployee();
-            break;
+                removeEmployee();
+                break;
 
             case "Remove a Role":
-            removeRole();
-            break;
+                removeRole();
+                break;
 
             case "Remove a Department":
-            removeDept();
-            break;
+                removeDept();
+                break;
         }
     });
 };
@@ -198,68 +198,120 @@ const addRole = () => {
           value: department.id,
         }));
         inquirer
-        .prompt([
-          {
-            name: "roleName",
-            type: "input",
-            message: "Please enter your Role name.",
-          },
-          {
-            name: "salary",
-            type: "input",
-            message: "Please enter salary.",
-          },
-          {
-            name: "department",
-            type: "rawlist",
-            message: "What department is your role in?",
-            choices: newDepartment,
-          },
-        ])
-        .then((answer) => {
-          connection.query(
-            "INSERT INTO roles SET ?",
+            .prompt([
             {
-              title: answer.roleName,
-              salary: answer.salary,
-              department_id: answer.department
+              name: "roleName",
+              type: "input",
+              message: "Please enter your Role name.",
             },
-
-            (err, res) => {
-              if (err) throw err;
-              console.log(`${res.affectedRows} role inserted!\n`);
-              // Call start AFTER the INSERT completes
-              start();
-            }
-          );
-        });
-
+            {
+              name: "salary",
+              type: "input",
+              message: "Please enter salary.",
+            },
+            {
+              name: "department",
+              type: "rawlist",
+              message: "What department is your role in?",
+              choices: newDepartment,
+            },
+            ])
+            .then((answer) => {
+            connection.query(
+              "INSERT INTO roles SET ?",
+              {
+                title: answer.roleName,
+                salary: answer.salary,
+                department_id: answer.department,
+              },
+              (err, res) => {
+                if (err) throw err;
+                console.log(`${res.affectedRows} role inserted!\n`);
+                // Call start AFTER the INSERT completes
+                start();
+              }
+            );
+            });
     });
 };
 
 //Add Department//
 const addDept = () => {
     inquirer
+    .prompt([
+      {
+        name: "newDept",
+        type: "input",
+        message: "Please enter your New Department name.",
+      },
+    ])
+    .then((answer) => {
+      connection.query(
+        "INSERT INTO department SET ?",
+        {
+          name: answer.newDept,
+        },
+
+        (err, res) => {
+          if (err) throw err;
+          console.log(`${res.affectedRows} department inserted!\n`);
+          // Call start AFTER the INSERT completes
+          start();
+        }
+      );
+    });
+};
+
+//Update Employee Role//
+const updateEmployRoles = () => {
+  connection.query("SELECT * FROM roles", (err, roles) => {
+    if (err) throw err;
+    let newRoles = roles.map((role) => ({ 
+        name: role.title, 
+        value: role.id 
+    }));
+
+    connection.query("SELECT * FROM employee", (err, employees) => {
+      if (err) throw err;
+      let newEmployee = employees.map((employee) => ({
+        name: `${employee.first_name} ${employee.last_name}`,
+        value: employee.id,
+      }));
+      inquirer
         .prompt([
           {
-            name: "newDept",
-            type: "input",
-            message: "Please enter your New Department name.",
+            name: "employee",
+            type: "rawlist",
+            message: "Which employee do you want to update?",
+            choices: newEmployee,
+          },
+          {
+            name: "role",
+            type: "rawlist",
+            message: "What is the employees new role?",
+            choices: newRoles, 
           },
         ])
         .then((answer) => {
           connection.query(
-            "INSERT INTO department SET ?",
-            {
-              name: answer.newDept,
-            },
+            "UPDATE employee SET ? WHERE ?",
+            [
+              {
+                role_id: answer.role,
+              },
+              {
+                id: answer.employee,
+              },
+            ],
             (err, res) => {
                 if (err) throw err;
-                console.log(`${res.affectedRows} department inserted!\n`);
+                console.log(`${res.affectedRows} new role's inserted!\n`);
                 // Call start AFTER the INSERT completes
                 start();
             }
-        );
+            );
+        });
+    });
     });
 };
 
@@ -361,7 +413,8 @@ const removeDepartment = () => {
             });
     
         });
-}
+    }
+};
 
 // connect to the mysql server and sql database
 connection.connect((err) => {
