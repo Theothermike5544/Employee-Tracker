@@ -1,5 +1,5 @@
 CREATE TABLE employee (
-    
+
     id INT AUTO_INCREMENT,
 
     first_name VARCHAR(30),
@@ -15,7 +15,11 @@ CREATE TABLE employee (
     FOREIGN KEY(role_id) REFERENCES roles(id),
 
     FOREIGN KEY(manager_id) REFERENCES employee(id)
+    
 );
+
+-- ALTER TABLE employee 
+-- ADD FOREIGN KEY(role_id) REFERENCES roles(id);
 
 
 
